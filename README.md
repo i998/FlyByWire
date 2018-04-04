@@ -45,7 +45,6 @@ The FBW software reads and analyses an input signal using SBUS or PPM libraries,
       
 ## Known Limitations:
   - Max input voltage is 5.5v,   limited by the PCA 9685 chip input voltage specifications.  
-  - Max 8 channel PPM input signal is supported 
   - A PWM servo signal resolution depends on the servo signal frequency (the higher frequency the better resolution). 
     At 50Hz servo signal frequency the resolution is about 5 microseconds.  
 
