@@ -1,4 +1,5 @@
-Overview: 
+Overview:
+ 
 The Fly By Wire (FBW) device has been designed to control RC models with multiple control surfaces and servos - by allowing a custom control logic to get an input signal from a RC receiver and calculate required output for servos.  
 That would help with the following: 
    - Control models such as EDF jets with two rudders,   trust vectoring etc 
@@ -8,8 +9,11 @@ That would help with the following:
      channel mixes available in transmitter are not sufficient.  
 
 It is an on-board controller which able to receive an SBUS or PPM input signals and generate PWM or SBUS output signals to drive the servos. 
+
+
     
 Hardware:
+
 The FBW consists of three key components:
    -  Inverter  - to  invert the input signal (SBUS is an inverted RS232 with 8E2 frame) and convert it to 3.3 v
    -  Maple  Mini CPU module (http://wiki.stm32duino.com/index.php?title=Maple_Mini)
@@ -25,7 +29,10 @@ For the PCA 9685 servo driver board the following changes were made:
   
 The PCA 9685 servo driver boards are chainable so you could control more than 16 servos by adding more servo driver boards.  
 
+
+
 Software:
+
 The FBW software is based on the following:
   - Arduino for STM32 (https://github.com/rogerclarkmelbourne/Arduino_STM32)
   - SBUS library 
@@ -37,21 +44,29 @@ The original SBUS, PPM and Servo Driver libraries were customised to suit the FB
 
 The FBW software reads and analyses an input signal using SBUS or PPM libraries, once the signal is valid it then calls a Calculate method of an RC Model library. The RC Model class is where the input/output servo channel definitions and all your custom logic are placed. The Servo Driver library then writes the output values (servo pulses lengths in microseconds) to the PCA 9685 chip which generates the output signals to your servos.  Alternatively, you can use SBUS library and generate an SBUS output at TX pin of a Maple Mini serial port.     
 
+
       
 Known Limitations:
+
   - Max input voltage is 5.5v,   limited by the PCA 9685 chip input voltage specifications.  
   - Max 8 channel PPM input signal is supported 
   - A PWM servo signal resolution depends on the servo signal frequency (the higher frequency the better resolution). 
     At 50Hz servo signal frequency the resolution is about 5 microseconds.  
 
 
+	
+	
 Repository Contents:
+
    /documentation - A circuit diagram, Data sheets, additional information
    /src – a set of libraries 
    /examples - examples on how the libraries can be used 
 
+   
+   
 
-Further improvements: 
+Further improvements:
+ 
 The following has been thought but not implemented: 
    - Logging input/output data to a hardware logging  device, 
      for example  https://hobbyking.com/en_us/sd-logger-blackbox-flight-data-recorder.html
@@ -59,7 +74,11 @@ The following has been thought but not implemented:
    - On-board current measurement, for example with  a Hall Effect-Based Current Sensor Allegro ACS770xCB
    - On-board voltage measurement 
 
+   
+   
+   
 License:
+
 Fly By Wire is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
@@ -69,6 +88,8 @@ Fly By Wire is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
+
+
 
 P.S. If someone is interested to design and produce a single PCB with SMD components to reduce size and 
 weight of the device please feel free to contact. 
