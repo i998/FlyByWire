@@ -1,5 +1,4 @@
-Overview:
- 
+##Overview:
 The Fly By Wire (FBW) device has been designed to control RC models with multiple control surfaces and servos - by allowing a custom control logic to get an input signal from a RC receiver and calculate required output for servos.  
 That would help with the following: 
    - Control models such as EDF jets with two rudders,   trust vectoring etc 
@@ -12,8 +11,7 @@ It is an on-board controller which able to receive an SBUS or PPM input signals 
 
 
     
-Hardware:
-
+##Hardware:
 The FBW consists of three key components:
    -  Inverter  - to  invert the input signal (SBUS is an inverted RS232 with 8E2 frame) and convert it to 3.3 v
    -  Maple  Mini CPU module (http://wiki.stm32duino.com/index.php?title=Maple_Mini)
@@ -31,8 +29,7 @@ The PCA 9685 servo driver boards are chainable so you could control more than 16
 
 
 
-Software:
-
+##Software:
 The FBW software is based on the following:
   - Arduino for STM32 (https://github.com/rogerclarkmelbourne/Arduino_STM32)
   - SBUS library 
@@ -46,8 +43,7 @@ The FBW software reads and analyses an input signal using SBUS or PPM libraries,
 
 
       
-Known Limitations:
-
+##Known Limitations:
   - Max input voltage is 5.5v,   limited by the PCA 9685 chip input voltage specifications.  
   - Max 8 channel PPM input signal is supported 
   - A PWM servo signal resolution depends on the servo signal frequency (the higher frequency the better resolution). 
@@ -56,18 +52,16 @@ Known Limitations:
 
 	
 	
-Repository Contents:
-
-   /documentation - A circuit diagram, Data sheets, additional information
-   /src – a set of libraries 
-   /examples - examples on how the libraries can be used 
+##Repository Contents:
+   - /documentation - A circuit diagram, Data sheets, additional information
+   - /src – a set of libraries 
+   - /examples - examples on how the libraries can be used 
 
    
    
 
-Further improvements:
- 
-The following has been thought but not implemented: 
+##Further improvements:
+ The following has been thought but not implemented: 
    - Logging input/output data to a hardware logging  device, 
      for example  https://hobbyking.com/en_us/sd-logger-blackbox-flight-data-recorder.html
    - GPS data logging  
@@ -77,8 +71,7 @@ The following has been thought but not implemented:
    
    
    
-License:
-
+##License:
 Fly By Wire is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
@@ -91,5 +84,6 @@ GNU General Public License for more details.
 
 
 
-P.S. If someone is interested to design and produce a single PCB with SMD components to reduce size and 
+##P.S.
+If someone is interested to design and produce a single PCB with SMD components to reduce size and 
 weight of the device please feel free to contact. 
