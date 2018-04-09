@@ -1,6 +1,8 @@
 /*
 Original library is from https://github.com/Nikkilae/PPM-reader
 Updated by IF 
+2018-04-09
+- added extra conditions to ISR
 2018-01-13
 - includes support for Maple Mini board / STM32 (https://github.com/rogerclarkmelbourne/Arduino_STM32/)
 - updated Interrupt Service Routine function 
@@ -110,25 +112,35 @@ void PPMReader::ISR() {
 		failSafe=false;
     }
     else {
-        // Set DataReady flag  to 0 as the data is being acquired AND
-		//Store times between pulses as channel values
-          if (pulseCounter < channelAmount) {
-		      isDataReady=false;
-			  dataInputTimeStamp=0;
-			  rawValues[pulseCounter+1] = time;  // pulseCounter+1 is for change {0..15} to {1.16}
-              //Check if value are in failsafe  range (Walkera DEVO 12E returns 800 us approx)
-			  if (time >= failSafeMinPulseLength && time <= failSafeMaxPulseLength) {
-                failSafe=true;
-              }
-          }
-        ++pulseCounter;
-		  // if all pulses counted then set flag that data is ready 
-		  if (pulseCounter==channelAmount) {
-		     isDataReady=true;
-			 dataInputTimeStamp=micros();
-		  }
+            //Proceed only if a captured impulse looks valid - 
+            //that prevents from recording too short or too long pulses,  
+            //missing or multiple interrupt firing etc. so the rest of 
+            //the logic is not disturbed.   
+            //Otherwise simply ignore detected impulses that are too short or too long 
+            if (time >= minChannelValue && time <= maxChannelValue)  {  
 
+                // Set DataReady flag  to 0 as the data is being acquired AND
+                //Store times between pulses as channel values
+                if (pulseCounter < channelAmount) {
+                    isDataReady=false;
+                    dataInputTimeStamp=0;
+                    rawValues[pulseCounter+1] = time;  // pulseCounter+1 is for change {0..15} to {1.16}
+                    //Check if value are in failsafe  range (Walkera DEVO 12E returns 800 us approx)
+                    if (time >= failSafeMinPulseLength && time <= failSafeMaxPulseLength) {
+                        failSafe=true;
+                    }
+                }
+				++pulseCounter;
+                
+				// if all pulses counted then set flag that data is ready 
+                if (pulseCounter==channelAmount) {
+                    isDataReady=true;
+                    dataInputTimeStamp=micros();
+                }
 		}
+	}
+
+	
 }
 
 /* Function to return the latest raw (not necessarily valid) value for the  * channel (starting from 0) */
