@@ -92,7 +92,9 @@ Serial.println("Setup() started ");
 
  // The minimum value (time) after which the signal frame is considered to
  // be finished and we can start to expect a new signal frame.
- // Walkera has 10000 us as blank frame    
+	//Minimal blank time for 8 channels is:
+	// PPM signal period - (150% max servo duration * 8 + 400us trailing pulse) 
+	// 22000 us - (2100*8 + 400) = 4800us  */    
     PPM.blankTime = 5000;
 
   //Calibration multipliers to apply to raw channel data values before 
