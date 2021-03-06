@@ -1,16 +1,23 @@
 /*
-v1.0 - Fly By Wire  
+v1.2 - Fly By Wire  
   
-Status:  Works OK
+Status: Works OK  
 
-Change list:   
+Change list: 
+v1.2: 
+- added FlyByWire_STM32_FreqTest example to measure internal oscillator frequency for PCA 9685 servo driver board  
+- updated PCA9685ServoDriver library to align with Adafruit library v.2.3.1, mostly to cover issues with Prescale
+  calculation (https://github.com/adafruit/Adafruit-PWM-Servo-Driver-Library/pull/61)
+- updated Fly By Wire code to use setServoAll function
+  
+v1.0:  
 - RC model updated, tested and configured with a test model.  
 
 Notes:
 - Compiled with Fastest (-O3) settings 
 
 =================================================================
-(C)2018 ifh  
+(C)2021, 2018 ifh  
 This file is part of Fly By Wire.
 
 Fly By Wire is free software: you can redistribute it and/or modify
@@ -51,8 +58,11 @@ uint16_t timestampOld =0;
 uint16_t timestampNew =0;
 
 //======Setup I2C interface===================================
-TwoWire I2C_FAST (1,I2C_FAST_MODE); //I2C1 
+//TwoWire I2C_FAST (1,I2C_FAST_MODE); //I2C1 
 //TwoWire I2C_FAST (2,I2C_FAST_MODE); //I2C2 
+TwoWire I2C_FAST=TwoWire(1,I2C_FAST_MODE); //I2C1  
+//TwoWire I2C_FAST=TwoWire(2,I2C_FAST_MODE); //I2C2
+
 //============================================================
 
 
@@ -180,7 +190,7 @@ Serial.println("Setup() started ");
    //be finished and we can start to expect a new signal frame.
 	//Minimal blank time for 8 channels is:
 	// PPM signal period - (150% max servo duration * 8 + 400us trailing pulse) 
-	// 22000 us - (2100*8 + 400) = 4800us  */    
+	// 22000 us - (2100*8 + 400) = 4800us  */   
    ppm.blankTime = 5000;
 
   //Calibration multipliers to apply to raw channel data values before 
@@ -212,6 +222,7 @@ Serial.println("Model setup completed");
 //================Setup Servo Driver============
   //begin the Servo Driver communication
   pwm.begin(); 
+  pwm.freqCalibration = 1.0504; // adjustment for the real frequency of PCA9685 chip, see FlyByWire_STM32_FreqTest example  
   pwm.setPWMFreq(50);  // Analog servos run at ~50 Hz updates 
 //==============================================
 Serial.println("Servo Driver setup completed");
@@ -285,7 +296,7 @@ if(timestampNew!=0 && timestampNew!=timestampOld){ //data is ready and it is a n
   if (channelsIN[0]!=0){
     //Normal signal
     Model_Test1.Calculate(channelsIN, channelsOUT);
-    // Model_Test1.Passthrough(channelsIN, channelsOUT);
+    //Model_Test1.Passthrough(channelsIN, channelsOUT);
     //Serial.println("Normal CalcTime,us:"+String(Model_Test1.CalculationTime) + " ");  
 
   }
@@ -307,17 +318,24 @@ if(timestampNew!=0 && timestampNew!=timestampOld){ //data is ready and it is a n
 
 
   //===========Write 16 chammels to servo driver ====================== 
-  for (uint8_t i=1; i<=16; i++) {
-    if (i<=channelAmountOut)  {
-       //set output signal value
-       pwm.setServo(i,channelsOUT[i] );
-     }
-     else
-     {
-       // set middle position of a servo
-       pwm.setServo(i,1500);
-     }
-  }
+    //use the setServo function:        
+              for (uint8_t i=1; i<=16; i++) {
+                if (i<=channelAmountOut)  {
+                   //set output signal value
+                   pwm.setServo(i,channelsOUT[i] );
+                 }
+                 else
+                 {
+                   // set middle position of a servo
+                   pwm.setServo(i,1500);
+                 }
+              }
+
+   //use the setServoAll function:
+        //  pwm.setServoAll(channelsOUT);
+          
+
+  
   //===================================================================
   
   
