@@ -12,7 +12,7 @@ Updated by IF
 - channels renumbered to start from 1 
 - added comments/descriptions 
 TODO - see the .h file 
-=================================================================
+=================================================================*/
 /*************************************************** 
   This is a library for our Adafruit 16-channel PWM & Servo driver
 

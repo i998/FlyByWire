@@ -33,11 +33,12 @@ The FBW software is based on the following:
   - SBUS library 
   - PPM library 
   - RC Model library
-  - Servo Driver library      
+  - Servo Driver library
+  - Median Filter library   
 
 The original SBUS, PPM and Servo Driver libraries were customised to suit the FBW needs and therefore they are included into this repository as local versions. 
 
-The FBW software reads and analyses an input signal using SBUS or PPM libraries, once the signal is valid it then calls a Calculate method of an RC Model library. The RC Model class is where the input/output servo channel definitions and all your custom logic are placed. The Servo Driver library then writes the output values (servo pulses lengths in microseconds) to the PCA 9685 chip which generates the output signals to your servos.  Alternatively, you can use SBUS library and generate an SBUS output at TX pin of a Maple Mini serial port.     
+The FBW software reads and analyses an input signal using SBUS or PPM libraries, once the signal is valid it then applies a Median Filter and calls a Calculate method of an RC Model library. The RC Model class is where the input/output servo channel definitions and all your custom logic are placed. The Servo Driver library then writes the output values (servo pulses lengths in microseconds) to the PCA 9685 chip which generates the output signals to your servos.  Alternatively, you can use SBUS library and generate an SBUS output at TX pin of a Maple Mini serial port.     
 
       
 ## Known Limitations:

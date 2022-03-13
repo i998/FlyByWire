@@ -1,6 +1,8 @@
 /*
 Original library is from https://github.com/Nikkilae/PPM-reader
 Updated by IF 
+2022-02-23
+- removed unnecessary comparison 
 2018-01-13
 - includes support for Maple Mini board / STM32 (https://github.com/rogerclarkmelbourne/Arduino_STM32/)
 - updated Interrupt Service Routine function 
