@@ -1,9 +1,11 @@
 /*
-  v1.3 - Fly By Wire
+  v1.4 - Fly By Wire
 
   Status: Works OK
 
   Change list:
+  v1.4:
+  - bugfix - variable type mismatch 
   v1.3:
   - added Median filter which shall reduce effect of potential jitter/outlier values for RC channels. 5-point median filtering is used  
   - minor bugfixes
@@ -20,7 +22,7 @@
   - Compiled with Fastest (-O3) settings
 
   =================================================================
-  (C)2022, 2021, 2018 ifh
+  (C)2025, 2022, 2021, 2018 ifh
   This file is part of Fly By Wire.
 
   Fly By Wire is free software: you can redistribute it and/or modify
@@ -58,8 +60,8 @@
 const int ledPin =  LED_BUILTIN;
 
 //timestamp variables
-uint16_t timestampOld = 0;
-uint16_t timestampNew = 0;
+uint32_t timestampOld = 0;
+uint32_t timestampNew = 0;
 
 //======Setup I2C interface===================================
 //TwoWire I2C_FAST (1,I2C_FAST_MODE); //I2C1
